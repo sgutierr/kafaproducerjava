@@ -14,9 +14,7 @@ This application listens for records sent to the `total-connected-devices` topic
  **`oc extract secret/my-cluster-cluster-ca-cert --keys=ca.crt `**
  
  3. Generate a `truststore.jks` file with `password` as the store password. Store the KeyStore files in your workspace.
-  **`keytool -import -trustcacerts -alias root \`**
- **`-file kafka-cluster.crt -keystore truststore.jks \`**
- **`-storepass password -noprompt`**
+ **`keytool -import -trustcacerts -alias root -file kafka-cluster.crt -keystore truststore.jks -storepass password -noprompt`**
 ## 1. Setting up connection
 By using your editor of choice, open the `producer/src/main/java/com/redhat/telemetry/producer/ProducerApp.java` file, and replace these variables by your correspondent environment variables: 
  - "**YOUR_KAFKA_BOOTSTRAP_HOST**"
