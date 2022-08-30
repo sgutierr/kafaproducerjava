@@ -6,19 +6,22 @@ This is the software required for running this example:
  - Java Development Kit (JDK) OpenJDK 11
  - Red Hat OpenShift Container Platform CLI 
  - Kafka installlation on Red Hat OpenShift 
- - Create a topic called `total-connected-devices`
-	> oc process \\
-	> -f resources/create-topic.yaml \\
-	> -p TOPIC_NAME='total-connected-devices' \ | oc apply -f -
 
 # Demo steps:
 This application listens for records sent to the `total-connected-devices` topic. Then, run the `producer` application in your other command-terminal and verify that the `viewer` application is receiving the records.
+## 0. Prepare certificate 
+  1. Extracting the cluster certificate from OCP, example from Kafka namespace:
+ **`oc extract secret/my-cluster-cluster-ca-cert --keys=ca.crt `**
+ 
+ 3. Generate a `truststore.jks` file with `password` as the store password. Store the KeyStore files in your workspace.
+  **`keytool -import -trustcacerts -alias root \`**
+ **`-file kafka-cluster.crt -keystore truststore.jks \`**
+ **`-storepass password -noprompt`**
 ## 1. Setting up connection
-By using your editor of choice, open the `producer/src/main/java/com/redhat/telemetry/producer/ProducerApp.java` file, and examine the code.
-Replace these variables by your correspondent environment variables: 
-    "YOUR_KAFKA_BOOTSTRAP_HOST"
-    "YOUR_KAFKA_BOOTSTRAP_PORT"
-    "ABSOLUTE_PATH_TO_YOUR_WORKSPACE_FOLDER"
+By using your editor of choice, open the `producer/src/main/java/com/redhat/telemetry/producer/ProducerApp.java` file, and replace these variables by your correspondent environment variables: 
+ - "**YOUR_KAFKA_BOOTSTRAP_HOST**"
+ - "**YOUR_KAFKA_BOOTSTRAP_PORT**"
+ - "**ABSOLUTE_PATH_TO_YOUR_WORKSPACE_FOLDER**" (path where your truststore.jks file is)
 
 ## 2. Compile application
 In your command-line terminal, navigate to the `kafka-producers/plain` directory. Compile the application.
